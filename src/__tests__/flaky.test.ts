@@ -1,6 +1,6 @@
 import { randomBoolean, randomDelay, flakyApiCall, unstableCounter } from '../utils';
 
-describe('Intentionally Flaky Tests', () => {
+describe('Some tests', () => {
   test('random boolean should be true', () => {
     const result = randomBoolean();
     expect(result).toBe(true);
