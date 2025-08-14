@@ -26,11 +26,21 @@ describe('Some tests', () => {
   });
 
   test('multiple random conditions', () => {
+    // Mock Math.random to return deterministic values > 0.3 for consistent test behavior
+    const mockMathRandom = jest.spyOn(Math, 'random');
+    mockMathRandom
+      .mockReturnValueOnce(0.5) // condition1: 0.5 > 0.3 = true
+      .mockReturnValueOnce(0.7) // condition2: 0.7 > 0.3 = true
+      .mockReturnValueOnce(0.4); // condition3: 0.4 > 0.3 = true
+    
     const condition1 = Math.random() > 0.3;
     const condition2 = Math.random() > 0.3;
     const condition3 = Math.random() > 0.3;
     
     expect(condition1 && condition2 && condition3).toBe(true);
+    
+    // Clean up mock
+    mockMathRandom.mockRestore();
   });
 
   test('date-based flakiness', () => {
