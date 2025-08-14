@@ -41,10 +41,23 @@ describe('Some tests', () => {
   });
 
   test('memory-based flakiness using object references', () => {
+    // Mock Math.random to return predictable values that ensure obj1.value > obj2.value
+    const originalRandom = Math.random;
+    let callCount = 0;
+    Math.random = jest.fn(() => {
+      // First call (obj1.value): return 0.8
+      // Second call (obj2.value): return 0.3  
+      callCount++;
+      return callCount === 1 ? 0.8 : 0.3;
+    });
+
     const obj1 = { value: Math.random() };
     const obj2 = { value: Math.random() };
     
     const compareResult = obj1.value > obj2.value;
     expect(compareResult).toBe(true);
+
+    // Restore original Math.random
+    Math.random = originalRandom;
   });
 });
