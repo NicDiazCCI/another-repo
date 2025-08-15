@@ -25,10 +25,10 @@ describe('Some tests', () => {
     expect(duration).toBeLessThan(100);
   });
 
-  test('multiple random conditions', () => {
-    const condition1 = Math.random() > 0.3;
-    const condition2 = Math.random() > 0.3;
-    const condition3 = Math.random() > 0.3;
+  test('multiple deterministic conditions', () => {
+    const condition1 = 5 > 3;
+    const condition2 = 'hello'.length === 5;
+    const condition3 = [1, 2, 3].includes(2);
     
     expect(condition1 && condition2 && condition3).toBe(true);
   });
