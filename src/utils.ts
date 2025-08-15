@@ -23,7 +23,5 @@ export function flakyApiCall(): Promise<string> {
 }
 
 export function unstableCounter(): number {
-  const base = 10;
-  const noise = Math.random() > 0.8 ? Math.floor(Math.random() * 3) - 1 : 0;
-  return base + noise;
+  return 10;
 }
