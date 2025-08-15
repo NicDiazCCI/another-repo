@@ -26,11 +26,18 @@ describe('Some tests', () => {
   });
 
   test('multiple random conditions', () => {
+    const mockMath = jest.spyOn(Math, 'random');
+    mockMath.mockReturnValueOnce(0.5);
+    mockMath.mockReturnValueOnce(0.6);
+    mockMath.mockReturnValueOnce(0.7);
+    
     const condition1 = Math.random() > 0.3;
     const condition2 = Math.random() > 0.3;
     const condition3 = Math.random() > 0.3;
     
     expect(condition1 && condition2 && condition3).toBe(true);
+    
+    mockMath.mockRestore();
   });
 
   test('date-based flakiness', () => {
