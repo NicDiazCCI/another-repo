@@ -18,7 +18,7 @@ describe('Some tests', () => {
 
   test('timing-based test with race condition', async () => {
     const startTime = Date.now();
-    await randomDelay(50, 150);
+    await randomDelay(30, 80);
     const endTime = Date.now();
     const duration = endTime - startTime;
     
