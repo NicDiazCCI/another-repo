@@ -25,12 +25,16 @@ describe('Some tests', () => {
     expect(duration).toBeLessThan(100);
   });
 
-  test('multiple random conditions', () => {
-    const condition1 = Math.random() > 0.3;
-    const condition2 = Math.random() > 0.3;
-    const condition3 = Math.random() > 0.3;
+  test('multiple conditions logic', () => {
+    const testConditions = (val1: number, val2: number, val3: number) => {
+      const condition1 = val1 > 0.3;
+      const condition2 = val2 > 0.3;
+      const condition3 = val3 > 0.3;
+      return condition1 && condition2 && condition3;
+    };
     
-    expect(condition1 && condition2 && condition3).toBe(true);
+    expect(testConditions(0.5, 0.5, 0.5)).toBe(true);
+    expect(testConditions(0.1, 0.5, 0.5)).toBe(false);
   });
 
   test('date-based flakiness', () => {
