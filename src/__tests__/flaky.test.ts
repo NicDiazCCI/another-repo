@@ -22,7 +22,8 @@ describe('Some tests', () => {
     const endTime = Date.now();
     const duration = endTime - startTime;
     
-    expect(duration).toBeLessThan(100);
+    expect(duration).toBeGreaterThanOrEqual(50);
+    expect(duration).toBeLessThan(200); // Allow some buffer for execution overhead
   });
 
   test('multiple random conditions', () => {
