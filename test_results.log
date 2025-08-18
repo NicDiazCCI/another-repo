@@ -1,0 +1,39 @@
+Run :
+
+> rule-repo@1.0.0 test
+> jest --testNamePattern=random boolean should be true --verbose
+
+FAIL src/__tests__/flaky.test.ts
+  Some tests
+    ✕ random boolean should be true (4 ms)
+    ○ skipped unstable counter should equal exactly 10
+    ○ skipped flaky API call should succeed
+    ○ skipped timing-based test with race condition
+    ○ skipped multiple random conditions
+    ○ skipped date-based flakiness
+    ○ skipped memory-based flakiness using object references
+
+  ● Some tests › random boolean should be true
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    [0m [90m 4 |[39m   test([32m'random boolean should be true'[39m[33m,[39m () [33m=>[39m {
+     [90m 5 |[39m     [36mconst[39m result [33m=[39m randomBoolean()[33m;[39m
+    [31m[1m>[22m[39m[90m 6 |[39m     expect(result)[33m.[39mtoBe([36mtrue[39m)[33m;[39m
+     [90m   |[39m                    [31m[1m^[22m[39m
+     [90m 7 |[39m   })[33m;[39m
+     [90m 8 |[39m
+     [90m 9 |[39m   test([32m'unstable counter should equal exactly 10'[39m[33m,[39m () [33m=>[39m {[0m
+
+      at Object.<anonymous> (src/__tests__/flaky.test.ts:6:20)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 6 skipped, 7 total
+Snapshots:   0 total
+Time:        1.927 s
+Ran all test suites with tests matching "random boolean should be true".
+Exit code: 
+---

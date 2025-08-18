@@ -1,9 +1,20 @@
 import { randomBoolean, randomDelay, flakyApiCall, unstableCounter } from '../utils';
 
 describe('Some tests', () => {
-  test('random boolean should be true', () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('random boolean should be true when Math.random returns > 0.5', () => {
+    jest.spyOn(Math, 'random').mockReturnValue(0.6);
     const result = randomBoolean();
     expect(result).toBe(true);
+  });
+
+  test('random boolean should be false when Math.random returns <= 0.5', () => {
+    jest.spyOn(Math, 'random').mockReturnValue(0.4);
+    const result = randomBoolean();
+    expect(result).toBe(false);
   });
 
   test('unstable counter should equal exactly 10', () => {
