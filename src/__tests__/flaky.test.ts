@@ -1,6 +1,6 @@
 import { randomBoolean, randomDelay, flakyApiCall, unstableCounter } from '../utils';
 
-describe('Some tests', () => {
+describe('Intentionally Flaky Tests', () => {
   test('random boolean should be true', () => {
     const result = randomBoolean();
     expect(result).toBe(true);
@@ -26,11 +26,20 @@ describe('Some tests', () => {
   });
 
   test('multiple random conditions', () => {
+    // Use a seeded approach to make this test deterministic
+    const mockMath = jest.spyOn(Math, 'random');
+    mockMath
+      .mockReturnValueOnce(0.5) // > 0.3, condition1 = true
+      .mockReturnValueOnce(0.4) // > 0.3, condition2 = true  
+      .mockReturnValueOnce(0.8); // > 0.3, condition3 = true
+    
     const condition1 = Math.random() > 0.3;
     const condition2 = Math.random() > 0.3;
     const condition3 = Math.random() > 0.3;
     
     expect(condition1 && condition2 && condition3).toBe(true);
+    
+    mockMath.mockRestore();
   });
 
   test('date-based flakiness', () => {
