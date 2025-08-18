@@ -7,8 +7,10 @@ describe('Some tests', () => {
   });
 
   test('unstable counter should equal exactly 10', () => {
+    jest.spyOn(Math, 'random').mockReturnValue(0.5);
     const result = unstableCounter();
     expect(result).toBe(10);
+    jest.restoreAllMocks();
   });
 
   test('flaky API call should succeed', async () => {
