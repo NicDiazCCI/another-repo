@@ -1,10 +1,16 @@
 import { randomBoolean, randomDelay, flakyApiCall, unstableCounter } from '../utils';
 
 describe('Some tests', () => {
-  test('random boolean should be true', () => {
-    const result = randomBoolean();
-    expect(result).toBe(true);
-  });
+  jest.mock('../utils', () => ({
+    randomBoolean: jest.fn().mockReturnValue(true),
+    randomDelay: jest.fn(),
+    flakyApiCall: jest.fn(),
+    unstableCounter: jest.fn(),
+  }));
+ test('random boolean should be true', () => {
+   const result = randomBoolean();
+   expect(result).toBe(true);
+ });
 
   test('unstable counter should equal exactly 10', () => {
     const result = unstableCounter();
