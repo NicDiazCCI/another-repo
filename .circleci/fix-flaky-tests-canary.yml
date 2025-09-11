@@ -11,15 +11,15 @@ parameters:
     description: "Command to run after the fix-flaky-tests command"
   max-tests:
     type: integer
-    default: 3
-    description: "The maximum number of tests to fix in a single run (defaults to 3)"
+    default: 1
+    description: "The maximum number of tests to fix in a single run (defaults to 1)"
   max-prs:
     type: integer
     default: -1
     description: "The maximum number of PRs to open (-1 for unlimited, defaults to unlimited)"
   variations:
     type: integer
-    default: 3
+    default: 1
     description: "The number of fix variations to try in a single run (defaults to 1)"
   validations:
     type: integer
@@ -29,6 +29,10 @@ parameters:
     type: string
     default: "30m"
     description: "The number of minutes to wait for output from the fix-flaky-tests command (defaults to 30m)"
+  disable-response-storage:
+    type: boolean
+    default: false
+    description: "Disable response storage for enterprise accounts with zero data retention"
 
 executors:
   sandbox:
@@ -48,27 +52,38 @@ commands:
           name: "Configure node"
           command: |
             echo 'nvm use default' >> $BASH_ENV
+      - run:
+          name: Install agents
+          command: |
+            npm install -g @circleci/agents@canary
+            npm install -g opencode-ai@^0.6.5
 
 jobs:
   fix-flaky-tests:
     executor: sandbox
     steps:
-      - checkout
       - setup-sandbox
+      - checkout
       - run:
           name: Pre-command
-          command: << pipeline.parameters.pre-command >>
+          command: "<< pipeline.parameters.pre-command >>"
       - run:
           name: Fix flaky tests
           no_output_timeout: "<< pipeline.parameters.no-output-timeout >>"
           command: |
-            npx -y @circleci/agents@canary fix-flaky-tests \
+            agents fix-flaky-tests \
               --git-url << pipeline.project.git_url >> \
               --post-command "<< pipeline.parameters.post-command >>" \
               --max-tests << pipeline.parameters.max-tests >> \
               --max-prs << pipeline.parameters.max-prs >> \
               --variations << pipeline.parameters.variations >> \
-              --validations << pipeline.parameters.validations >>
+              --validations << pipeline.parameters.validations >> \
+              <<# pipeline.parameters.disable-response-storage >>--disable-response-storage<</ pipeline.parameters.disable-response-storage >>
+      - run:
+          name: Report failure to CircleCI
+          when: on_fail
+          command: |
+            agents report-fix-flaky-tests
       - store_artifacts:
           path: /tmp/test-artifacts
           when: always
