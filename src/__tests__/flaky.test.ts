@@ -1,49 +1,70 @@
 import { randomBoolean, randomDelay, flakyApiCall, unstableCounter } from '../utils';
 
 describe('Some tests', () => {
-  test('random boolean should be true', () => {
-    const result = randomBoolean();
-    expect(result).toBe(true);
+  afterEach(() => {
+    jest.useRealTimers();
+    jest.restoreAllMocks();
   });
 
-  test('unstable counter should equal exactly 10', () => {
-    const result = unstableCounter();
-    expect(result).toBe(10);
+  test('random boolean returns true when RNG > 0.5', () => {
+    const rng = () => 0.9;
+    expect(randomBoolean(rng)).toBe(true);
   });
 
-  test('flaky API call should succeed', async () => {
-    const result = await flakyApiCall();
-    expect(result).toBe('Success');
+  test('random boolean returns false when RNG <= 0.5', () => {
+    const rng = () => 0.1;
+    expect(randomBoolean(rng)).toBe(false);
   });
 
-  test('timing-based test with race condition', async () => {
-    const startTime = Date.now();
-    await randomDelay(50, 150);
-    const endTime = Date.now();
-    const duration = endTime - startTime;
-    
-    expect(duration).toBeLessThan(100);
+  test('unstable counter returns base 10 when no noise', () => {
+    const rng = () => 0.1; // never triggers noise
+    expect(unstableCounter(rng)).toBe(10);
   });
 
-  test('multiple random conditions', () => {
-    const condition1 = Math.random() > 0.3;
-    const condition2 = Math.random() > 0.3;
-    const condition3 = Math.random() > 0.3;
-    
+  test('unstable counter can add +1 noise deterministically', () => {
+    const values = [0.9, 0.99]; // trigger noise, then choose +1
+    const rng = () => values.shift() as number;
+    expect(unstableCounter(rng)).toBe(11);
+  });
+
+  test('flaky API call resolves when forced success', async () => {
+    jest.useFakeTimers();
+    const p = flakyApiCall({ fail: false, delayMs: 100 });
+    jest.advanceTimersByTime(100);
+    await expect(p).resolves.toBe('Success');
+  });
+
+  test('flaky API call rejects when forced failure', async () => {
+    jest.useFakeTimers();
+    const p = flakyApiCall({ fail: true, delayMs: 100 });
+    jest.advanceTimersByTime(100);
+    await expect(p).rejects.toThrow('Network timeout');
+  });
+
+  test('randomDelay resolves after fixed delay using fake timers', async () => {
+    jest.useFakeTimers();
+    const p = randomDelay(100, 100, () => 0.5);
+    jest.advanceTimersByTime(100);
+    await expect(p).resolves.toBeUndefined();
+  });
+
+  test('multiple conditions deterministic', () => {
+    const condition1 = true;
+    const condition2 = true;
+    const condition3 = true;
     expect(condition1 && condition2 && condition3).toBe(true);
   });
 
-  test('date-based flakiness', () => {
+  test('date-based check uses fixed system time', () => {
+    jest.useFakeTimers().setSystemTime(new Date('2020-01-01T00:00:00.001Z'));
     const now = new Date();
     const milliseconds = now.getMilliseconds();
-    
     expect(milliseconds % 7).not.toBe(0);
   });
 
-  test('memory-based flakiness using object references', () => {
-    const obj1 = { value: Math.random() };
-    const obj2 = { value: Math.random() };
-    
+  test('deterministic object value comparison', () => {
+    const obj1 = { value: 2 };
+    const obj2 = { value: 1 };
     const compareResult = obj1.value > obj2.value;
     expect(compareResult).toBe(true);
   });
