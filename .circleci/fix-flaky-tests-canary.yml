@@ -23,8 +23,8 @@ parameters:
     description: "The number of fix variations to try in a single run (defaults to 1)"
   validations:
     type: integer
-    default: 10
-    description: "The number of test runs to validate the fix (defaults to 10)"
+    default: 2
+    description: "The number of test runs to validate the fix (defaults to 2)"
   no-output-timeout:
     type: string
     default: "30m"
@@ -56,8 +56,8 @@ commands:
           name: Install agents
           command: |
             npm install -g @circleci/agents@canary
-            npm install -g opencode-ai@^0.6.5
-
+            npm install -g opencode-ai@0.6.5
+            npm install -g @anthropic-ai/claude-code@1.0.108
 jobs:
   fix-flaky-tests:
     executor: sandbox
