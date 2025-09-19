@@ -1,18 +1,29 @@
-export function randomBoolean(): boolean {
-  return Math.random() > 0.5;
+export function randomBoolean(rng: () => number = Math.random): boolean {
+  return rng() > 0.5;
 }
 
-export function randomDelay(min: number = 100, max: number = 1000): Promise<void> {
-  const delay = Math.floor(Math.random() * (max - min + 1)) + min;
-  return new Promise(resolve => setTimeout(resolve, delay));
+export function randomDelay(
+  min: number = 100,
+  max: number = 1000,
+  rng: () => number = Math.random,
+  timer: (cb: (...args: any[]) => void, ms: number) => any = setTimeout
+): Promise<void> {
+  const delay = Math.floor(rng() * (max - min + 1)) + min;
+  return new Promise(resolve => timer(resolve, delay));
 }
 
-export function flakyApiCall(): Promise<string> {
+interface FlakyApiOptions {
+  rng?: () => number;
+  timer?: (cb: (...args: any[]) => void, ms: number) => any;
+}
+
+export function flakyApiCall(options: FlakyApiOptions = {}): Promise<string> {
+  const { rng = Math.random, timer = setTimeout } = options;
   return new Promise((resolve, reject) => {
-    const shouldFail = Math.random() > 0.7;
-    const delay = Math.random() * 500;
-    
-    setTimeout(() => {
+    const shouldFail = rng() > 0.7;
+    const delay = rng() * 500;
+
+    timer(() => {
       if (shouldFail) {
         reject(new Error('Network timeout'));
       } else {
@@ -22,8 +33,10 @@ export function flakyApiCall(): Promise<string> {
   });
 }
 
-export function unstableCounter(): number {
-  const base = 10;
-  const noise = Math.random() > 0.8 ? Math.floor(Math.random() * 3) - 1 : 0;
+export function unstableCounter(
+  base: number = 10,
+  rng: () => number = Math.random
+): number {
+  const noise = rng() > 0.8 ? Math.floor(rng() * 3) - 1 : 0;
   return base + noise;
 }
