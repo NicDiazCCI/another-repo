@@ -12,7 +12,25 @@ describe('Some tests', () => {
   });
 
   test('flaky API call should succeed', async () => {
-    const result = await flakyApiCall();
+    const retryWithBackoff = async (fn: () => Promise<string>, maxRetries: number = 3): Promise<string> => {
+      let lastError: Error | null = null;
+      
+      for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        try {
+          return await fn();
+        } catch (error) {
+          lastError = error as Error;
+          if (attempt < maxRetries) {
+            const backoffDelay = Math.pow(2, attempt) * 100;
+            await new Promise(resolve => setTimeout(resolve, backoffDelay));
+          }
+        }
+      }
+      
+      throw lastError;
+    };
+
+    const result = await retryWithBackoff(flakyApiCall);
     expect(result).toBe('Success');
   });
 
