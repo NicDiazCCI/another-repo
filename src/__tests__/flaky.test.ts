@@ -41,8 +41,8 @@ describe('Some tests', () => {
   });
 
   test('memory-based flakiness using object references', () => {
-    const obj1 = { value: Math.random() };
-    const obj2 = { value: Math.random() };
+    const obj1 = { value: 0.7 };
+    const obj2 = { value: 0.3 };
     
     const compareResult = obj1.value > obj2.value;
     expect(compareResult).toBe(true);
