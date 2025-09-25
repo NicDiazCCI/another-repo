@@ -34,10 +34,15 @@ describe('Some tests', () => {
   });
 
   test('date-based flakiness', () => {
+    const mockDate = new Date('2023-01-01T10:30:45.123Z');
+    jest.spyOn(global, 'Date').mockImplementation(() => mockDate);
+    
     const now = new Date();
     const milliseconds = now.getMilliseconds();
     
     expect(milliseconds % 7).not.toBe(0);
+    
+    jest.restoreAllMocks();
   });
 
   test('memory-based flakiness using object references', () => {
