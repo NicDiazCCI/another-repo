@@ -26,11 +26,24 @@ describe('Some tests', () => {
   });
 
   test('multiple random conditions', () => {
-    const condition1 = Math.random() > 0.3;
-    const condition2 = Math.random() > 0.3;
-    const condition3 = Math.random() > 0.3;
-    
-    expect(condition1 && condition2 && condition3).toBe(true);
+    // Mock Math.random to return predictable values > 0.3
+    const originalRandom = Math.random;
+    let callCount = 0;
+    Math.random = jest.fn(() => {
+      callCount++;
+      return 0.5; // Always return 0.5 > 0.3, ensuring conditions are true
+    });
+
+    try {
+      const condition1 = Math.random() > 0.3;
+      const condition2 = Math.random() > 0.3;
+      const condition3 = Math.random() > 0.3;
+      
+      expect(condition1 && condition2 && condition3).toBe(true);
+    } finally {
+      // Restore original Math.random
+      Math.random = originalRandom;
+    }
   });
 
   test('date-based flakiness', () => {
