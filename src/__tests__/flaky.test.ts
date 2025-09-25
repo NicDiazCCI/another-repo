@@ -34,10 +34,15 @@ describe('Some tests', () => {
   });
 
   test('date-based flakiness', () => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date('2023-01-01T12:00:00.123Z'));
+    
     const now = new Date();
     const milliseconds = now.getMilliseconds();
     
     expect(milliseconds % 7).not.toBe(0);
+    
+    jest.useRealTimers();
   });
 
   test('memory-based flakiness using object references', () => {
