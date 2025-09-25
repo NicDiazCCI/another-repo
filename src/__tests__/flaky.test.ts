@@ -17,12 +17,16 @@ describe('Some tests', () => {
   });
 
   test('timing-based test with race condition', async () => {
-    const startTime = Date.now();
-    await randomDelay(50, 150);
-    const endTime = Date.now();
-    const duration = endTime - startTime;
+    jest.useFakeTimers();
     
-    expect(duration).toBeLessThan(100);
+    const delayPromise = randomDelay(50, 150);
+    
+    jest.advanceTimersByTime(200);
+    await delayPromise;
+    
+    expect(jest.getTimerCount()).toBe(0);
+    
+    jest.useRealTimers();
   });
 
   test('multiple random conditions', () => {
