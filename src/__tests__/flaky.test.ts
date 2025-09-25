@@ -26,11 +26,22 @@ describe('Some tests', () => {
   });
 
   test('multiple random conditions', () => {
-    const condition1 = Math.random() > 0.3;
-    const condition2 = Math.random() > 0.3;
-    const condition3 = Math.random() > 0.3;
+    // Mock Math.random to return deterministic values > 0.3 to ensure test passes consistently
+    const originalRandom = Math.random;
+    const mockValues = [0.5, 0.6, 0.7]; // All values > 0.3
+    let callCount = 0;
     
-    expect(condition1 && condition2 && condition3).toBe(true);
+    Math.random = jest.fn(() => mockValues[callCount++]);
+    
+    try {
+      const condition1 = Math.random() > 0.3;
+      const condition2 = Math.random() > 0.3;
+      const condition3 = Math.random() > 0.3;
+      
+      expect(condition1 && condition2 && condition3).toBe(true);
+    } finally {
+      Math.random = originalRandom;
+    }
   });
 
   test('date-based flakiness', () => {
