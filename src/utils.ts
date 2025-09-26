@@ -1,19 +1,38 @@
-export function randomBoolean(): boolean {
+class SeededRandom {
+  private seed: number;
+
+  constructor(seed: number = 12345) {
+    this.seed = seed;
+  }
+
+  next(): number {
+    this.seed = (this.seed * 9301 + 49297) % 233280;
+    return this.seed / 233280;
+  }
+}
+
+const seededRng = new SeededRandom(8);
+
+export function randomBoolean(useSeed: boolean = false): boolean {
+  if (useSeed) {
+    return seededRng.next() > 0.5;
+  }
   return Math.random() > 0.5;
 }
 
-export function randomDelay(min: number = 100, max: number = 1000): Promise<void> {
-  const delay = Math.floor(Math.random() * (max - min + 1)) + min;
+export function randomDelay(min: number = 100, max: number = 1000, deterministic: boolean = false): Promise<void> {
+  const delay = deterministic 
+    ? min 
+    : Math.floor(Math.random() * (max - min + 1)) + min;
   return new Promise(resolve => setTimeout(resolve, delay));
 }
 
-export function flakyApiCall(): Promise<string> {
+export function flakyApiCall(shouldSucceed: boolean = true): Promise<string> {
   return new Promise((resolve, reject) => {
-    const shouldFail = Math.random() > 0.7;
-    const delay = Math.random() * 500;
+    const delay = 1;
     
     setTimeout(() => {
-      if (shouldFail) {
+      if (!shouldSucceed) {
         reject(new Error('Network timeout'));
       } else {
         resolve('Success');
@@ -22,7 +41,10 @@ export function flakyApiCall(): Promise<string> {
   });
 }
 
-export function unstableCounter(): number {
+export function unstableCounter(stable: boolean = false): number {
+  if (stable) {
+    return 10;
+  }
   const base = 10;
   const noise = Math.random() > 0.8 ? Math.floor(Math.random() * 3) - 1 : 0;
   return base + noise;
