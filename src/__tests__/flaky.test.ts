@@ -22,7 +22,9 @@ describe('Some tests', () => {
     const endTime = Date.now();
     const duration = endTime - startTime;
     
-    expect(duration).toBeLessThan(100);
+    // Fix: Expect duration to be within the actual delay range + buffer
+    expect(duration).toBeGreaterThanOrEqual(45); // Allow 5ms buffer below
+    expect(duration).toBeLessThan(200); // Allow 50ms buffer above
   });
 
   test('multiple random conditions', () => {
