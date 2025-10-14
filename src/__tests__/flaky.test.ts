@@ -26,10 +26,15 @@ describe('Some tests', () => {
   });
 
   test('multiple random conditions', () => {
+    jest.spyOn(Math, 'random')
+      .mockReturnValueOnce(0.5)  // > 0.3 = true
+      .mockReturnValueOnce(0.5)  // > 0.3 = true
+      .mockReturnValueOnce(0.5); // > 0.3 = true
+
     const condition1 = Math.random() > 0.3;
     const condition2 = Math.random() > 0.3;
     const condition3 = Math.random() > 0.3;
-    
+
     expect(condition1 && condition2 && condition3).toBe(true);
   });
 
