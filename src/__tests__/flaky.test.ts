@@ -21,8 +21,9 @@ describe('Some tests', () => {
     await randomDelay(50, 150);
     const endTime = Date.now();
     const duration = endTime - startTime;
-    
-    expect(duration).toBeLessThan(100);
+
+    expect(duration).toBeGreaterThanOrEqual(50);
+    expect(duration).toBeLessThan(200);
   });
 
   test('multiple random conditions', () => {
