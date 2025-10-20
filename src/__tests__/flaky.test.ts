@@ -17,11 +17,15 @@ describe('Some tests', () => {
   });
 
   test('timing-based test with race condition', async () => {
+    jest.spyOn(global.Math, 'random').mockReturnValue(0);
+
     const startTime = Date.now();
     await randomDelay(50, 150);
     const endTime = Date.now();
     const duration = endTime - startTime;
-    
+
+    jest.spyOn(global.Math, 'random').mockRestore();
+
     expect(duration).toBeLessThan(100);
   });
 
