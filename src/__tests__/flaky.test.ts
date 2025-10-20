@@ -17,11 +17,19 @@ describe('Some tests', () => {
   });
 
   test('timing-based test with race condition', async () => {
+    // Mock Math.random to return a deterministic value that results in a delay < 100ms
+    // randomDelay(50, 150) calculates: Math.floor(Math.random() * (150 - 50 + 1)) + 50
+    // If Math.random() returns 0.3, delay = Math.floor(0.3 * 101) + 50 = 30 + 50 = 80ms
+    const mockRandom = jest.spyOn(Math, 'random').mockReturnValue(0.3);
+
     const startTime = Date.now();
     await randomDelay(50, 150);
     const endTime = Date.now();
     const duration = endTime - startTime;
-    
+
+    mockRandom.mockRestore();
+
+    // With a deterministic delay of 80ms, this should always pass
     expect(duration).toBeLessThan(100);
   });
 
