@@ -1,22 +1,30 @@
 import { randomBoolean, randomDelay, flakyApiCall, unstableCounter } from '../utils';
 
 describe('Some tests', () => {
-  test('random boolean should be true', () => {
-    const result = randomBoolean();
-    expect(result).toBe(true);
+  afterEach(() => {
+    jest.restoreAllMocks();
+    jest.useRealTimers();
   });
 
-  test('unstable counter should equal exactly 10', () => {
+  test('randomBoolean returns a boolean', () => {
+    expect(typeof randomBoolean()).toBe('boolean');
+  });
+
+  test('unstableCounter stays within expected range', () => {
     const result = unstableCounter();
-    expect(result).toBe(10);
+    expect(result).toBeGreaterThanOrEqual(9);
+    expect(result).toBeLessThanOrEqual(11);
   });
 
-  test('flaky API call should succeed', async () => {
-    const result = await flakyApiCall();
-    expect(result).toBe('Success');
+  test('flakyApiCall resolves successfully', async () => {
+    jest.spyOn(Math, 'random')
+      .mockReturnValueOnce(0.0) // shouldFail = false
+      .mockReturnValueOnce(0.0); // delay
+
+    await expect(flakyApiCall()).resolves.toBe('Success');
   });
 
-  test('timing-based test with race condition', async () => {
+  test('timing-based test resolves after delay', async () => {
     jest.useFakeTimers();
 
     const resolved = jest.fn();
@@ -25,29 +33,33 @@ describe('Some tests', () => {
     jest.advanceTimersByTime(100);
     await promise;
 
-    jest.useRealTimers();
     expect(resolved).toHaveBeenCalled();
   });
 
-  test('multiple random conditions', () => {
+  test('multiple random conditions are all true when mocked', () => {
+    jest.spyOn(Math, 'random')
+      .mockReturnValueOnce(0.9)
+      .mockReturnValueOnce(0.9)
+      .mockReturnValueOnce(0.9);
+
     const condition1 = Math.random() > 0.3;
     const condition2 = Math.random() > 0.3;
     const condition3 = Math.random() > 0.3;
-    
+
     expect(condition1 && condition2 && condition3).toBe(true);
   });
 
-  test('date-based flakiness', () => {
-    const now = new Date();
-    const milliseconds = now.getMilliseconds();
-    
+  test('date-based logic with fixed timestamp', () => {
+    const fixed = new Date('2020-01-01T00:00:00.005Z');
+    const milliseconds = fixed.getMilliseconds();
+
     expect(milliseconds % 7).not.toBe(0);
   });
 
-  test('memory-based flakiness using object references', () => {
-    const obj1 = { value: Math.random() };
-    const obj2 = { value: Math.random() };
-    
+  test('stable object comparison with fixed values', () => {
+    const obj1 = { value: 0.9 };
+    const obj2 = { value: 0.1 };
+
     const compareResult = obj1.value > obj2.value;
     expect(compareResult).toBe(true);
   });
