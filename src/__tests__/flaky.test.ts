@@ -21,8 +21,10 @@ describe('Some tests', () => {
     await randomDelay(50, 150);
     const endTime = Date.now();
     const duration = endTime - startTime;
-    
-    expect(duration).toBeLessThan(100);
+
+    // Should accommodate the full delay range plus overhead
+    expect(duration).toBeGreaterThanOrEqual(50);
+    expect(duration).toBeLessThan(200); // 150ms + 50ms buffer for overhead
   });
 
   test('multiple random conditions', () => {
