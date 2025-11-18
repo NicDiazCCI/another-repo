@@ -17,12 +17,21 @@ describe('Some tests', () => {
   });
 
   test('timing-based test with race condition', async () => {
+    jest.useFakeTimers();
     const startTime = Date.now();
-    await randomDelay(50, 150);
+    const delayPromise = randomDelay(50, 150);
+
+    // Fast-forward time to complete the delay
+    jest.advanceTimersByTime(150);
+    await delayPromise;
+
     const endTime = Date.now();
     const duration = endTime - startTime;
-    
-    expect(duration).toBeLessThan(100);
+
+    // With fake timers, duration should be exactly 150ms (the amount we advanced)
+    expect(duration).toBe(150);
+
+    jest.useRealTimers();
   });
 
   test('multiple random conditions', () => {
