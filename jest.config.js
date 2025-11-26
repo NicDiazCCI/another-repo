@@ -4,8 +4,7 @@ module.exports = {
   roots: ['<rootDir>/src'],
   testMatch: ['**/__tests__/**/*.test.ts'],
   testPathIgnorePatterns: [
-    '/node_modules/',
-    'flaky\\.test\\.ts$'
+    '/node_modules/'
   ],
   collectCoverageFrom: [
     'src/**/*.ts',
