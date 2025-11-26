@@ -1,0 +1,12 @@
+version: 2.1
+orbs:
+  node: circleci/node@7
+jobs:
+  cci-agent-setup:
+    executor: node/default
+    steps:
+      - checkout
+workflows:
+  cci-agent-setup:
+    jobs:
+      - cci-agent-setup
