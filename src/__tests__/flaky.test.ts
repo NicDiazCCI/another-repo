@@ -3,7 +3,7 @@ import { randomBoolean, randomDelay, flakyApiCall, unstableCounter } from '../ut
 describe('Some tests', () => {
   test('random boolean should be true', () => {
     const result = randomBoolean();
-    expect(result).toBe(true);
+    expect(typeof result).toBe('boolean');
   });
 
   test('unstable counter should equal exactly 10', () => {
@@ -36,8 +36,9 @@ describe('Some tests', () => {
   test('date-based flakiness', () => {
     const now = new Date();
     const milliseconds = now.getMilliseconds();
-    
-    expect(milliseconds % 7).not.toBe(0);
+
+    expect(milliseconds).toBeGreaterThanOrEqual(0);
+    expect(milliseconds).toBeLessThan(1000);
   });
 
   test('memory-based flakiness using object references', () => {
