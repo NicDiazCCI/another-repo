@@ -1,1 +1,3 @@
-# rule-repo
+# Project
+
+This is the project README.
