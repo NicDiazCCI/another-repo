@@ -26,23 +26,23 @@ describe('Some tests', () => {
   });
 
   test('multiple random conditions', () => {
-    const condition1 = Math.random() > 0.3;
-    const condition2 = Math.random() > 0.3;
-    const condition3 = Math.random() > 0.3;
+    const condition1 = randomBoolean();
+    const condition2 = randomBoolean();
+    const condition3 = randomBoolean();
     
     expect(condition1 && condition2 && condition3).toBe(true);
   });
 
   test('date-based flakiness', () => {
-    const now = new Date();
+    const now = new Date('2020-01-01T00:00:00.001Z');
     const milliseconds = now.getMilliseconds();
     
     expect(milliseconds % 7).not.toBe(0);
   });
 
   test('memory-based flakiness using object references', () => {
-    const obj1 = { value: Math.random() };
-    const obj2 = { value: Math.random() };
+    const obj1 = { value: 1 };
+    const obj2 = { value: 0 };
     
     const compareResult = obj1.value > obj2.value;
     expect(compareResult).toBe(true);
