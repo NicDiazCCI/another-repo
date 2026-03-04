@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="7" failures="0" errors="0" time="1.106">
+  <testsuite name="Some tests" errors="0" failures="0" skipped="0" timestamp="2026-03-04T20:11:11" time="0.911" tests="7">
+    <testcase classname="Some tests random boolean should be true" name="Some tests random boolean should be true" time="0.002">
+    </testcase>
+    <testcase classname="Some tests unstable counter should equal exactly 10" name="Some tests unstable counter should equal exactly 10" time="0.001">
+    </testcase>
+    <testcase classname="Some tests flaky API call should succeed" name="Some tests flaky API call should succeed" time="0.001">
+    </testcase>
+    <testcase classname="Some tests timing-based test with race condition" name="Some tests timing-based test with race condition" time="0.061">
+    </testcase>
+    <testcase classname="Some tests multiple random conditions" name="Some tests multiple random conditions" time="0.001">
+    </testcase>
+    <testcase classname="Some tests date-based flakiness" name="Some tests date-based flakiness" time="0">
+    </testcase>
+    <testcase classname="Some tests memory-based flakiness using object references" name="Some tests memory-based flakiness using object references" time="0.001">
+    </testcase>
+  </testsuite>
+</testsuites>
