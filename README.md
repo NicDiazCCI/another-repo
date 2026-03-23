@@ -6,12 +6,6 @@ A TypeScript project with Jest testing configuration.
 
 This project provides a basic TypeScript setup with Jest for testing.
 
-## Installation
-
-```bash
-npm install
-```
-
 ## Scripts
 
 - `npm test` - Run tests using Jest
