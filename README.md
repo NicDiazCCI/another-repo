@@ -6,20 +6,6 @@ A TypeScript repository demonstrating flaky test patterns and CircleCI testing w
 
 This project contains utility functions that exhibit non-deterministic behavior and a test suite designed to demonstrate flaky test scenarios. It's configured with CircleCI for continuous integration and automated testing.
 
-## Features
-
-- **Utility Functions**: Random behavior generators including:
-  - `randomBoolean()`: Returns a random boolean value
-  - `randomDelay()`: Creates a promise with random delay timing
-  - `flakyApiCall()`: Simulates an API call that randomly fails
-  - `unstableCounter()`: Returns a number with occasional noise
-
-- **Test Suite**: Comprehensive test cases demonstrating various flaky test patterns:
-  - Random boolean assertions
-  - Timing-based race conditions
-  - Non-deterministic API call testing
-  - Memory-based reference comparisons
-
 ## Project Structure
 
 ```
