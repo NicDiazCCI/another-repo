@@ -1,4 +1,8 @@
 version: 2.1
+parameters:
+  run_scheduled_tests:
+    type: boolean
+    default: false
 orbs:
   node: circleci/node@7
 jobs:
@@ -50,5 +54,10 @@ workflows:
             branches:
               only:
                 - main
+    jobs:
+      - test-node
+  scheduled-tests-manual:
+    when:
+      equal: [ << pipeline.parameters.run_scheduled_tests >>, true ]
     jobs:
       - test-node
