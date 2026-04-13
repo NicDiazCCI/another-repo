@@ -42,3 +42,13 @@ workflows:
   test:
     jobs:
       - test-node
+  scheduled-tests:
+    triggers:
+      - schedule:
+          cron: "0 3 * * *"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - test-node
