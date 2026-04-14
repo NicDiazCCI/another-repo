@@ -8,6 +8,10 @@ const fs = require('fs');
 const path = require('path');
 
 function isoNow() {
+  if (process.env.FAKE_NOW) {
+    const t = new Date(process.env.FAKE_NOW);
+    if (!isNaN(t.getTime())) return t.toISOString();
+  }
   return new Date().toISOString();
 }
 
