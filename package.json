@@ -8,7 +8,8 @@
     "test:watch": "jest --watch",
     "test:run": "jest",
     "build": "tsc",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "task:custom": "node scripts/custom-task.js"
   },
   "keywords": [],
   "author": "",

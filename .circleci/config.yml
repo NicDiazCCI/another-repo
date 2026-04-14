@@ -3,6 +3,9 @@ parameters:
   run_scheduled_tests:
     type: boolean
     default: false
+  run_custom_task:
+    type: boolean
+    default: false
 orbs:
   node: circleci/node@7
 jobs:
@@ -40,6 +43,15 @@ jobs:
             echo "$TEST_FILES" | circleci tests run --command="xargs npm run test:run -- --reporters=default --reporters=jest-junit" --verbose
       - store_test_results:
           path: test-results
+  custom-task:
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          name: Run custom scheduled task
+          command: node scripts/custom-task.js
 workflows:
   build:
     jobs:
@@ -62,3 +74,18 @@ workflows:
       equal: [ << pipeline.parameters.run_scheduled_tests >>, true ]
     jobs:
       - test-node
+  scheduled-custom-task:
+    triggers:
+      - schedule:
+          cron: "15 3 * * *"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - custom-task
+  scheduled-custom-task-manual:
+    when:
+      equal: [ << pipeline.parameters.run_custom_task >>, true ]
+    jobs:
+      - custom-task
