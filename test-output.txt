@@ -1,0 +1,183 @@
+
+> rule-repo@1.0.0 test
+> jest
+
+PASS src/__tests__/customTask.test.ts
+FAIL src/__tests__/flaky.test.ts
+  ● Some tests › multiple random conditions
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    [0m [90m 31 |[39m     [36mconst[39m condition3 [33m=[39m [33mMath[39m[33m.[39mrandom() [33m>[39m [35m0.3[39m[33m;[39m
+     [90m 32 |[39m     
+    [31m[1m>[22m[39m[90m 33 |[39m     expect(condition1 [33m&&[39m condition2 [33m&&[39m condition3)[33m.[39mtoBe([36mtrue[39m)[33m;[39m
+     [90m    |[39m                                                    [31m[1m^[22m[39m
+     [90m 34 |[39m   })[33m;[39m
+     [90m 35 |[39m
+     [90m 36 |[39m   test([32m'date-based flakiness'[39m[33m,[39m () [33m=>[39m {[0m
+
+      at Object.<anonymous> (src/__tests__/flaky.test.ts:33:52)
+
+  ● Some tests › memory-based flakiness using object references
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    [0m [90m 46 |[39m     
+     [90m 47 |[39m     [36mconst[39m compareResult [33m=[39m obj1[33m.[39mvalue [33m>[39m obj2[33m.[39mvalue[33m;[39m
+    [31m[1m>[22m[39m[90m 48 |[39m     expect(compareResult)[33m.[39mtoBe([36mtrue[39m)[33m;[39m
+     [90m    |[39m                           [31m[1m^[22m[39m
+     [90m 49 |[39m   })[33m;[39m
+     [90m 50 |[39m })[33m;[39m[0m
+
+      at Object.<anonymous> (src/__tests__/flaky.test.ts:48:27)
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       2 failed, 6 passed, 8 total
+Snapshots:   0 total
+Time:        2.099 s
+Ran all test suites.
+
+> rule-repo@1.0.0 test
+> jest
+
+PASS src/__tests__/customTask.test.ts
+FAIL src/__tests__/flaky.test.ts
+  ● Some tests › random boolean should be true
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    [0m [90m 4 |[39m   test([32m'random boolean should be true'[39m[33m,[39m () [33m=>[39m {
+     [90m 5 |[39m     [36mconst[39m result [33m=[39m randomBoolean()[33m;[39m
+    [31m[1m>[22m[39m[90m 6 |[39m     expect(result)[33m.[39mtoBe([36mtrue[39m)[33m;[39m
+     [90m   |[39m                    [31m[1m^[22m[39m
+     [90m 7 |[39m   })[33m;[39m
+     [90m 8 |[39m
+     [90m 9 |[39m   test([32m'unstable counter should equal exactly 10'[39m[33m,[39m () [33m=>[39m {[0m
+
+      at Object.<anonymous> (src/__tests__/flaky.test.ts:6:20)
+
+  ● Some tests › timing-based test with race condition
+
+    expect(received).toBeLessThan(expected)
+
+    Expected: < 100
+    Received:   105
+
+    [0m [90m 23 |[39m     [36mconst[39m duration [33m=[39m endTime [33m-[39m startTime[33m;[39m
+     [90m 24 |[39m     
+    [31m[1m>[22m[39m[90m 25 |[39m     expect(duration)[33m.[39mtoBeLessThan([35m100[39m)[33m;[39m
+     [90m    |[39m                      [31m[1m^[22m[39m
+     [90m 26 |[39m   })[33m;[39m
+     [90m 27 |[39m
+     [90m 28 |[39m   test([32m'multiple random conditions'[39m[33m,[39m () [33m=>[39m {[0m
+
+      at Object.<anonymous> (src/__tests__/flaky.test.ts:25:22)
+
+  ● Some tests › multiple random conditions
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    [0m [90m 31 |[39m     [36mconst[39m condition3 [33m=[39m [33mMath[39m[33m.[39mrandom() [33m>[39m [35m0.3[39m[33m;[39m
+     [90m 32 |[39m     
+    [31m[1m>[22m[39m[90m 33 |[39m     expect(condition1 [33m&&[39m condition2 [33m&&[39m condition3)[33m.[39mtoBe([36mtrue[39m)[33m;[39m
+     [90m    |[39m                                                    [31m[1m^[22m[39m
+     [90m 34 |[39m   })[33m;[39m
+     [90m 35 |[39m
+     [90m 36 |[39m   test([32m'date-based flakiness'[39m[33m,[39m () [33m=>[39m {[0m
+
+      at Object.<anonymous> (src/__tests__/flaky.test.ts:33:52)
+
+  ● Some tests › memory-based flakiness using object references
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    [0m [90m 46 |[39m     
+     [90m 47 |[39m     [36mconst[39m compareResult [33m=[39m obj1[33m.[39mvalue [33m>[39m obj2[33m.[39mvalue[33m;[39m
+    [31m[1m>[22m[39m[90m 48 |[39m     expect(compareResult)[33m.[39mtoBe([36mtrue[39m)[33m;[39m
+     [90m    |[39m                           [31m[1m^[22m[39m
+     [90m 49 |[39m   })[33m;[39m
+     [90m 50 |[39m })[33m;[39m[0m
+
+      at Object.<anonymous> (src/__tests__/flaky.test.ts:48:27)
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       4 failed, 4 passed, 8 total
+Snapshots:   0 total
+Time:        2.254 s
+Ran all test suites.
+
+> rule-repo@1.0.0 test
+> jest
+
+PASS src/__tests__/customTask.test.ts
+FAIL src/__tests__/flaky.test.ts
+  ● Some tests › random boolean should be true
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    [0m [90m 4 |[39m   test([32m'random boolean should be true'[39m[33m,[39m () [33m=>[39m {
+     [90m 5 |[39m     [36mconst[39m result [33m=[39m randomBoolean()[33m;[39m
+    [31m[1m>[22m[39m[90m 6 |[39m     expect(result)[33m.[39mtoBe([36mtrue[39m)[33m;[39m
+     [90m   |[39m                    [31m[1m^[22m[39m
+     [90m 7 |[39m   })[33m;[39m
+     [90m 8 |[39m
+     [90m 9 |[39m   test([32m'unstable counter should equal exactly 10'[39m[33m,[39m () [33m=>[39m {[0m
+
+      at Object.<anonymous> (src/__tests__/flaky.test.ts:6:20)
+
+  ● Some tests › timing-based test with race condition
+
+    expect(received).toBeLessThan(expected)
+
+    Expected: < 100
+    Received:   123
+
+    [0m [90m 23 |[39m     [36mconst[39m duration [33m=[39m endTime [33m-[39m startTime[33m;[39m
+     [90m 24 |[39m     
+    [31m[1m>[22m[39m[90m 25 |[39m     expect(duration)[33m.[39mtoBeLessThan([35m100[39m)[33m;[39m
+     [90m    |[39m                      [31m[1m^[22m[39m
+     [90m 26 |[39m   })[33m;[39m
+     [90m 27 |[39m
+     [90m 28 |[39m   test([32m'multiple random conditions'[39m[33m,[39m () [33m=>[39m {[0m
+
+      at Object.<anonymous> (src/__tests__/flaky.test.ts:25:22)
+
+  ● Some tests › memory-based flakiness using object references
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    [0m [90m 46 |[39m     
+     [90m 47 |[39m     [36mconst[39m compareResult [33m=[39m obj1[33m.[39mvalue [33m>[39m obj2[33m.[39mvalue[33m;[39m
+    [31m[1m>[22m[39m[90m 48 |[39m     expect(compareResult)[33m.[39mtoBe([36mtrue[39m)[33m;[39m
+     [90m    |[39m                           [31m[1m^[22m[39m
+     [90m 49 |[39m   })[33m;[39m
+     [90m 50 |[39m })[33m;[39m[0m
+
+      at Object.<anonymous> (src/__tests__/flaky.test.ts:48:27)
+
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       3 failed, 5 passed, 8 total
+Snapshots:   0 total
+Time:        2.55 s
+Ran all test suites.
