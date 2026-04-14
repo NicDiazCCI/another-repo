@@ -55,6 +55,9 @@ jobs:
             set -e
             node scripts/custom-task.js | tee custom-task-output.json
             node -e "const fs=require('fs');const t=fs.readFileSync('custom-task-output.json','utf8').trim().split(/\r?\n/).pop();const o=JSON.parse(t);function a(c,m){if(!c){throw new Error(m)}}a(o.task==='custom-scheduled-task','task mismatch');a(typeof o.package==='string'&&o.package.length>0,'bad package');a(/^\d{4}-\d{2}-\d{2}T/.test(o.date),'bad date');a(Number.isInteger(o.checksum)&&o.checksum>=0&&o.checksum<100000,'bad checksum');a(/^v\d+\./.test(o.node),'bad node');console.log('Custom task output valid')"
+      - store_artifacts:
+          path: custom-task-output.json
+          destination: custom-task
 workflows:
   build:
     jobs:
