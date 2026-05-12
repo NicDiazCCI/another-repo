@@ -40,7 +40,7 @@ jobs:
             mkdir -p test-results
             export JEST_JUNIT_OUTPUT="test-results/junit.xml"
             TEST_FILES=$(circleci tests glob "src/**/*.{test,spec}.{js,ts}")
-            echo "$TEST_FILES" | circleci tests run --command="xargs npm run test:run -- --reporters=default --reporters=jest-junit" --verbose
+            echo "$TEST_FILES" | circleci tests run --command="xargs npm test -- --reporters=default --reporters=jest-junit" --verbose
       - store_test_results:
           path: test-results
   custom-task:
